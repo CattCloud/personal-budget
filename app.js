@@ -35,7 +35,7 @@ Movimiento.prototype.renderMovimiento = function() {
     // Crear el elemento <p class="fs-2">$100</p>
     const cardTextP = document.createElement('p');
     cardTextP.className = 'fs-3';
-    cardTextP.textContent = this.monto;
+    cardTextP.textContent = "S/"+this.monto;
 
     // Añadir los elementos al árbol DOM
     cardDiv.appendChild(cardHeaderDiv);
