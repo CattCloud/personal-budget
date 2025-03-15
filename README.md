@@ -47,3 +47,68 @@ El principio DRY (Don't Repeat Yourself) promueve la reutilización del código 
 - **Uso de Métodos de Array**: Utilicé métodos como `map`, `filter` y `reduce` para evitar escribir lógica repetitiva para operar sobre los datos de los movimientos.
 
 ---
+
+### **Backlog**
+
+#### **HU1: Filtrado Avanzado de Movimientos**
+**Como usuario**, quiero poder filtrar los movimientos por tipo (ingreso o egreso), rango de fechas y monto mínimo o máximo desde la vista de filtros, para encontrar fácilmente la información que necesito.
+
+**Criterios de Aceptación:**
+- Se deben implementar campos para seleccionar tipo, rango de fechas y rango de montos en la página `filter.html`.
+- Los resultados de los filtros deben mostrarse dinámicamente en la tabla de movimientos.
+- Incluir la opción de "Limpiar Filtros" para volver a mostrar todos los movimientos.
+
+---
+
+#### **HU2: Edición y Eliminación de Movimientos**
+**Como usuario**, quiero poder editar o eliminar cualquier movimiento registrado desde la tabla de movimientos, para corregir errores o ajustar mi resumen financiero.
+
+**Criterios de Aceptación:**
+- Cada fila de la tabla debe incluir botones para editar o eliminar el movimiento.
+- Al eliminar un movimiento, este debe ser eliminado del array global `movimientos` y la interfaz debe actualizarse.
+- Al editar un movimiento, se debe mostrar un formulario con los datos actuales precargados para que puedan ser modificados.
+- Recalcular automáticamente los totales al editar o eliminar.
+
+---
+
+#### **HU3: Exportar Movimientos a CSV**
+**Como usuario**, quiero poder exportar mis movimientos registrados a un archivo CSV, para poder analizarlos en otras herramientas o compartirlos.
+
+**Criterios de Aceptación:**
+- Agregar un botón "Exportar CSV" que genere un archivo descargable con los datos actuales del array `movimientos`.
+- El archivo CSV debe incluir columnas para tipo, descripción, fecha y monto.
+- Asegurar que todos los movimientos visibles (filtrados o no) se incluyan en el archivo.
+
+---
+
+#### **HU4: Visualización Gráfica del Resumen Financiero**
+**Como usuario**, quiero poder ver gráficos que representen mis ingresos, egresos y balances de manera visual, para entender más fácilmente mis datos financieros.
+
+**Criterios de Aceptación:**
+- Implementar gráficos de barras o circulares para mostrar:
+  - Proporción de ingresos y egresos.
+  - Evolución del saldo a lo largo del tiempo.
+- Utilizar una biblioteca de gráficos (como Chart.js o D3.js).
+- Los gráficos deben actualizarse automáticamente al registrar nuevos movimientos o aplicar filtros.
+
+---
+
+#### **HU5: Notificaciones de Presupuesto Excedido**
+**Como usuario**, quiero recibir alertas visuales cuando mis egresos acumulados superen cierto porcentaje de mis ingresos, para tomar mejores decisiones financieras.
+
+**Criterios de Aceptación:**
+- Establecer un umbral personalizable de egresos, por ejemplo, el 80% de los ingresos.
+- Mostrar una alerta en la interfaz (usando Bootstrap) cuando los egresos superen el umbral.
+- La alerta debe desaparecer automáticamente si los egresos vuelven a estar por debajo del límite.
+
+---
+
+### **Conexión con la Aplicación Actual**
+
+- **HU1:** Filtrado de movimientos ya tiene una base implementada con la redirección a `filter.html` y el manejo del array `movimientos` en `localStorage`.
+- **HU2:** Aprovecha la estructura actual de la tabla para agregar acciones de edición y eliminación por fila.
+- **HU3:** El array `movimientos` está listo para ser convertido a CSV, lo que facilita la implementación.
+- **HU4:** Las tarjetas de resumen (`Balance`, `Ingresos`, `Egresos`) ya ofrecen cálculos que podrían integrarse a los gráficos.
+- **HU5:** Los totales de ingresos y egresos recalculados automáticamente pueden usarse como base para determinar el umbral.
+
+---

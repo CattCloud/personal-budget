@@ -1,0 +1,42 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bs-primary: #183461;
+    --bs-secondary: #fa9c06;
+  }
+ 
+
+
+#container-principal{
+    background-color: #183461;
+    height: auto;
+}
+
+@media (min-width: 768px){
+    #container-principal{
+        height: 100vh;
+    }
+}
+
+.card-character-body h5{
+    background-color: #fa9c06;
+    border-radius: 5px;
+}
+
+#form-insert-movimiento button,#filterButton{
+    background-color: #fa9c06;
+}
+
+.celda_tipo_egreso{
+    background-color: #fa9c06;
+    border-radius: 5px;
+}
+
+.celda_tipo_ingreso{
+    background-color: #183461;
+    border-radius: 5px;
+}
