@@ -103,12 +103,54 @@ El principio DRY (Don't Repeat Yourself) promueve la reutilización del código 
 
 ---
 
-### **Conexión con la Aplicación Actual**
+# Historias de Usuario Implementadas
 
-- **HU1:** Filtrado de movimientos ya tiene una base implementada con la redirección a `filter.html` y el manejo del array `movimientos` en `localStorage`.
-- **HU2:** Aprovecha la estructura actual de la tabla para agregar acciones de edición y eliminación por fila.
-- **HU3:** El array `movimientos` está listo para ser convertido a CSV, lo que facilita la implementación.
-- **HU4:** Las tarjetas de resumen (`Balance`, `Ingresos`, `Egresos`) ya ofrecen cálculos que podrían integrarse a los gráficos.
-- **HU5:** Los totales de ingresos y egresos recalculados automáticamente pueden usarse como base para determinar el umbral.
+## Historia de Usuario 1: Filtro para el Historial de Movimientos
+
+**HU1: Filtrar Historial de Movimientos**  
+Como *usuario*, quiero *filtrar el historial de movimientos (búsqueda por descripción, por rango de fechas y montos)* para *poder analizar movimientos específicos de forma eficiente*.
+
+### Criterios de Aceptación:
+- El usuario puede indicar el valor de descripción para filtrar los movimientos que incluyen ese término en su nombre.
+- El usuario puede especificar un rango de fechas utilizando un campo de tipo `date` para establecer las fechas de inicio y fin.
+- El usuario puede filtrar por rango de montos (mínimo y máximo).
+- La tabla del historial se actualiza en tiempo real, mostrando solo los movimientos que cumplen con los criterios establecidos.
+- Los filtros deben ser intuitivos y accesibles, con etiquetas claras y valores predeterminados opcionales.
+- El botón de limpiar filtros debe restaurar la vista inicial mostrando todos los movimientos y limpiar los valores ingresados en los filtros.
 
 ---
+
+## Historia de Usuario 2: Filtro para Tablas de Ingresos y Egresos
+
+**HU2: Filtrar por Frecuencia y Prioridad**  
+Como *usuario*, quiero *filtrar los ingresos por frecuencia y los egresos por prioridad* para *enfocar mi análisis según el tipo de movimiento*.
+
+### Criterios de Aceptación:
+
+**En la tabla de ingresos:**
+- El usuario puede seleccionar una opción de frecuencia (`Mensual`, `Anual`, `Único`, etc.) desde un menú desplegable.
+- Al aplicar el filtro, se muestran solo los ingresos que coincidan con la frecuencia seleccionada.
+
+**En la tabla de egresos:**
+- El usuario puede filtrar por prioridad (`Prioritario` o `No Prioritario`) usando casillas de verificación.
+- El sistema debe permitir combinar ambos estados (mostrar todos, solo prioritarios, o solo no prioritarios).
+
+**Ambas tablas:**
+- Las tablas deben actualizarse en tiempo real al aplicar o limpiar los filtros.
+- Los filtros son accesibles y presentan un diseño intuitivo para facilitar su uso.
+
+---
+## Retos Adicionales Implementados
+- Implementé el componente modal de Bootstrap para mostrar mensajes de éxito en el registro de movimientos, mejorando la retroalimentación al usuario.
+- Añadí un botón que muestra u oculta los campos de filtro en la UI, ofreciendo una experiencia más limpia y personalizada al usuario.
+- Desarrollo de una funcionalidad de limpieza total que reinicia tanto los campos de búsqueda como los filtros aplicados en las tablas.
+- Manejo eficiente de datos utilizando objetos `Date` y cadenas ISO para garantizar la consistencia de las fechas en los filtros y representaciones en la UI.
+
+## Decisiones Técnicas Clave
+- **Doble Tabla:** Se implementaron dos tablas separadas (una para ingresos y otra para egresos) debido a que los filtros están diseñados en base a las propiedades únicas de cada tipo de movimiento (frecuencia para ingresos y prioridad para egresos).
+- **Unificación de Fechas:** Optamos por convertir las fechas a un formato ISO (`YYYY-MM-DD`) para garantizar la interoperabilidad entre diferentes navegadores y evitar problemas de zonas horarias.
+- **Renderización Dinámica:** Todas las tablas (historial, ingresos y egresos) se actualizan en tiempo real al aplicar filtros, asegurando una experiencia fluida para el usuario.
+- **Filtros Intuitivos:** Los filtros fueron diseñados para ser claros, con opciones predeterminadas y accesibles para los usuarios.
+
+## Enlace al Sitio
+Accede al proyecto funcionando en este enlace: [Enlace al Sitio](https://cattcloud.github.io/personal-budget/)

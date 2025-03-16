@@ -6,7 +6,8 @@
     <title>Gestor de Presupuesto</title>
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 <body>
     <main id="container-principal" class="container-fluid py-4">
@@ -46,9 +47,28 @@
             </div>
         </div>
     
+
+        <!-- Modal de Mensajes -->
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="alertModalLabel">Mensaje</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalMessage">
+                        <!-- Aquí irá el contenido del mensaje -->
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close-modal" type="button" class="btn text-white" data-bs-dismiss="modal" >Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4">
             <!-- Formulario -->
-            <div class="col-md-6">
+            <div class="col-md-6" >
                 <div class="card bg-light shadow-md">
                     <div class="card-body">
                         <h5 class="card-title mb-3">Añadir Movimiento</h5>
@@ -81,7 +101,7 @@
                             </div>
                             <div id="prioritario-field" class="mb-4 d-none">
                                 <div class="form-check d-flex justify-content-end ">
-                                    <input type="checkbox" class="form-check-input" id="prioritario">
+                                    <input type="checkbox" class="form-check-input" id="prioritario" checked>
                                     <label class="form-check-label fw-medium ms-1" for="prioritario">Gasto Prioritario</label>
                                 </div>
                             </div>
@@ -96,6 +116,67 @@
                     <div class="card bg-light shadow-md">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Historial de Movimientos</h5>
+                            <!-- Filtros -->
+                            <div class="mb-3 d-flex align-items-center">
+                                <!-- Formulario de búsqueda -->
+                                <form id="searchForm" class="flex-grow-1">
+                                    <div class="d-flex">
+                                        <input 
+                                            type="text" 
+                                            id="filterDescriptionAll" 
+                                            class="form-control flex-grow-1" 
+                                            placeholder="Ingresa descripción" 
+                                            required
+                                        >
+                                        <button 
+                                            type="submit" 
+                                            class="btn text-white ms-2 fw-medium"
+                                            id="btnSearchAll">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <!-- Botón de filtro -->
+                                <div class="w-auto">
+                                    <button 
+                                        class="btn text-white ms-2 fw-medium" 
+                                        id="btnFilter" 
+                                        data-bs-toggle="collapse" 
+                                        data-bs-target="#filterSection">
+                                        <i class="bi bi-filter"></i>
+                                    </button>
+                                </div>
+                                 <!-- Botón para limpiar la búsqueda -->
+                                 <div class="w-auto">
+                                    <button 
+                                        class="btn text-white ms-2 fw-medium" 
+                                        id="btnClearSearch">
+                                        <i class="bi bi-x-circle"></i></i>
+                                    </button>
+                                 </div>                               
+                            </div>                                                  
+                            <!-- Sección de Filtros con Collapse -->
+                            <div id="filterSection" class="collapse">
+                                <div class="row g-2">
+                                    <div class="mt-3">
+                                        <label for="filterDate" class="form-label fw-medium">Fecha</label>
+                                        <input type="date" id="filterDate" class="form-control">
+                                    </div>                                    
+                                </div>
+                                <div class="mt-3">
+                                    <label for="amountRangeMin" class="form-label fw-medium">Monto mínimo</label>
+                                    <input type="number" id="minAmountAll" class="form-control mb-2" placeholder="0">
+                                </div>
+                                <div class="mt-3">
+                                    <label for="amountRangeMax" class="form-label fw-medium">Monto máximo</label>
+                                    <input type="number" id="maxAmountAll" class="form-control" placeholder="1000000">
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn text-white fw-medium my-2 w-75" id="btnAplicarFilter">Aplicar Filtro</button>
+                                </div>
+                            </div>
+                            <!-- Tabla -->
                             <div class="table-responsive" style="max-height: 16rem; overflow-y: auto;">
                                 <table class="table">
                                     <thead>
@@ -113,11 +194,88 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- Botón Filtrar -->
-                            <button id="filterButton" class="btn text-white mt-3 w-100 fw-bold">Filtrar</button>
                         </div>
                     </div>
                 </div>
+            
+
+                        <!-- Tabla de Ingresos -->
+                        <div class="col">
+                            <div class="card bg-light shadow-md">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3 text-center">Tabla de Ingresos</h5>
+                                    <!-- Filtros -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold" for="filterFrequency">Frecuencia</label>
+                                        <select id="filterFrequency" class="form-select">
+                                            <option value="">Todas las Frecuencias</option>
+                                            <option value="anual">Anual</option>
+                                            <option value="semestral">Semestral</option>
+                                            <option value="mensual">Mensual</option>
+                                            <option value="semanal">Semanal</option>
+                                            <option value="unico">Unico</option>
+                                        </select>
+                                    </div>
+                                    <div class="table-responsive" style="max-height: 16rem; overflow-y: auto;">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Descripción</th>
+                                                    <th>Frecuencia</th>
+                                                    <th>Fecha</th>
+                                                    <th class="text-end">Monto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="incomeTableBody">
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-muted">No hay ingresos registrados</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+        <!-- Tabla de Egresos -->
+        <div class="col">
+            <div class="card bg-light shadow-md">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 text-center">Tabla de Egresos</h5>
+                    <!-- Filtros -->
+                    <div class="mb-2 d-flex">
+                        <label class="form-label fw-bold me-3">Prioridad</label>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="priorityYes" value="yes" checked>
+                                <label for="priorityYes" class="form-check-label">Prioritario</label>
+                            </div>
+                            <div class="form-check ms-3">
+                                <input type="checkbox" class="form-check-input" id="priorityNo" value="no" checked>
+                                <label for="priorityNo" class="form-check-label">No Prioritario</label>
+                            </div>
+                    </div>
+                    <div class="table-responsive" style="max-height: 16rem; overflow-y: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th>Prioritario</th>
+                                    <th>Fecha</th>
+                                    <th class="text-end">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenseTableBody">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No hay egresos registrados</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 
         </div>
     
@@ -126,6 +284,7 @@
             <p>Gestor de Presupuesto © 2025</p>
         </footer-->
     </main>
-    <script src="js/app.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
